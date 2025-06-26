@@ -15,8 +15,20 @@ function App() {
 
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
-    const images = [1, 2, 3, 4, 5, 6];
-    setShuffledImages(images.sort(() => 0.5 - Math.random()));
+
+    const username = "thiru2002"; // GitHub username
+    const repo = "thiru-portfolio"; // GitHub repo
+    const folder = "public/gallery";
+
+    fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
+      .then((res) => res.json())
+      .then((data) => {
+        const imageUrls = data
+          .filter((file) => file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i))
+          .map((file) => `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`);
+        setShuffledImages(imageUrls.sort(() => 0.5 - Math.random()));
+      })
+      .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
 
   const handleChange = (e) => {
@@ -110,16 +122,15 @@ function App() {
               loop
               className="h-full w-full"
             >
-              {shuffledImages.map((img) => (
-                <SwiperSlide key={img}>
+              {shuffledImages.map((img, i) => (
+                <SwiperSlide key={i}>
                   <motion.img
-                    src={`/gallery/${img}.webp`}
-                    alt={`Thiru ${img}`}
+                    src={img}
+                    alt={`Thiru ${i}`}
                     className="w-full h-[70vh] md:h-[75vh] object-cover rounded-2xl"
                     initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 1 }}
-                    loading="lazy"
                   />
                 </SwiperSlide>
               ))}
@@ -131,10 +142,9 @@ function App() {
       {/* About */}
       <section id="about" className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         <img
-          src={`/gallery/${shuffledImages[0] || 1}.webp`}
+          src={shuffledImages[0] || ""}
           alt="Thiru profile"
           className="rounded-2xl shadow-lg w-full object-cover"
-          loading="lazy"
         />
         <div>
           <h2 className="text-4xl font-bold mb-4">About Me</h2>
@@ -148,12 +158,11 @@ function App() {
       <section id="gallery" className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center">
         <h2 className="text-3xl font-bold mb-10">Gallery</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {shuffledImages.map((img) => (
+          {shuffledImages.map((img, i) => (
             <motion.img
-              key={img}
-              src={`/gallery/${img}.webp`}
-              alt={`Thiru ${img}`}
-              loading="lazy"
+              key={i}
+              src={img}
+              alt={`Thiru ${i}`}
               className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
               style={{ filter: "blur(10px)" }}
               onLoad={(e) => (e.currentTarget.style.filter = "none")}
