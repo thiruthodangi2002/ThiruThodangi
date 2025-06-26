@@ -18,7 +18,7 @@ function App() {
 
     const username = "thiru2002"; // GitHub username
     const repo = "thiru-portfolio"; // GitHub repo
-    const folder = "public/gallery";
+    const folder = "gallery";
 
     fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
       .then((res) => res.json())
