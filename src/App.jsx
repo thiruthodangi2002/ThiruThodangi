@@ -123,61 +123,66 @@ function App() {
       </header>
 
       {/* Hero Section */}
-      <section id="home" className="min-h-screen flex flex-col md:flex-row px-6 md:px-16 py-16 bg-gradient-to-br from-gray-100 via-white to-gray-200">
-  {/* Left Text Section */}
-  <div className="md:w-1/2 flex flex-col justify-center pr-4">
-    <motion.h1
-      initial={{ opacity: 0, y: -20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight"
-    >
-      A Fresh Face with Fierce Passion
-    </motion.h1>
-    <motion.p
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.3, duration: 0.8 }}
-      className="mt-6 text-lg md:text-xl text-gray-700"
-    >
-      I’m <strong>Thiru Thodangi</strong> — an aspiring model with bold energy and a story to tell. Open to brand shoots, editorials and collabs.
-    </motion.p>
-    <motion.a
-      href="#gallery"
-      className="mt-6 bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 transition text-sm font-semibold w-fit"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: 0.6 }}
-    >
-      View Portfolio
-    </motion.a>
-  </div>
-
-  {/* Right Swiper Carousel */}
-  <div className="md:w-1/2 mt-10 md:mt-0">
-    <div className="h-full w-full overflow-hidden rounded-3xl shadow-2xl">
-      <Swiper
-        modules={[Autoplay]}
-        autoplay={{ delay: 1000, disableOnInteraction: false }}
-        loop={true}
-        spaceBetween={10}
-        slidesPerView={1}
-        className="h-full w-full"
+      <section
+        id="home"
+        className="min-h-screen flex flex-col md:flex-row px-6 md:px-16 py-16 bg-gradient-to-br from-gray-100 via-white to-gray-200"
       >
-        {shuffledImages.map((img, i) => (
-          <SwiperSlide key={i}>
-            <img
-              src={img}
-              alt={`Thiru ${i}`}
-              className="w-full h-[70vh] md:h-[75vh] object-cover rounded-2xl"
-              loading="lazy"
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
-    </div>
-  </div>
-</section>
+        {/* Left Text Section */}
+        <div className="md:w-1/2 flex flex-col justify-center pr-4">
+          <motion.h1
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="text-5xl md:text-6xl font-extrabold text-gray-900 leading-tight"
+          >
+            A Fresh Face with Fierce Passion
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.8 }}
+            className="mt-6 text-lg md:text-xl text-gray-700"
+          >
+            I’m <strong>Thiru Thodangi</strong> — an aspiring model with bold
+            energy and a story to tell. Open to brand shoots, editorials and
+            collabs.
+          </motion.p>
+          <motion.a
+            href="#gallery"
+            className="mt-6 bg-black text-white px-5 py-2 rounded-full hover:bg-gray-800 transition text-sm font-semibold w-fit"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6 }}
+          >
+            View Portfolio
+          </motion.a>
+        </div>
+
+        {/* Right Swiper Carousel */}
+        <div className="md:w-1/2 mt-10 md:mt-0">
+          <div className="h-full w-full overflow-hidden rounded-3xl shadow-2xl">
+            <Swiper
+              modules={[Autoplay]}
+              autoplay={{ delay: 1000, disableOnInteraction: false }}
+              loop={true}
+              spaceBetween={10}
+              slidesPerView={1}
+              className="h-full w-full"
+            >
+              {shuffledImages.map((img, i) => (
+                <SwiperSlide key={i}>
+                  <img
+                    src={img}
+                    alt={`Thiru ${i}`}
+                    className="w-full h-[70vh] md:h-[75vh] object-cover rounded-2xl"
+                    loading="lazy"
+                  />
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      </section>
 
       {/* About */}
       <section
