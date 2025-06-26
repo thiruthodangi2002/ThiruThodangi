@@ -16,9 +16,9 @@ function App() {
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
 
-    const username = "thiru2002"; // GitHub username
+    const username = "thiruthodangi2002"; // GitHub username
     const repo = "thiru-portfolio"; // GitHub repo
-    const folder = "gallery";
+    const folder = "gallery"; // moved to root for jsDelivr to access
 
     fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
       .then((res) => res.json())
@@ -164,8 +164,6 @@ function App() {
               src={img}
               alt={`Thiru ${i}`}
               className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
-              style={{ filter: "blur(10px)" }}
-              onLoad={(e) => (e.currentTarget.style.filter = "none")}
             />
           ))}
         </div>
