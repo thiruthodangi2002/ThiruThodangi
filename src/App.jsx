@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper/modules";
 import "swiper/css";
-import { FaInstagram, FaEnvelope } from "react-icons/fa";
+import { FaInstagram, FaEnvelope, FaBars, FaTimes } from "react-icons/fa";
 import emailjs from "emailjs-com";
 import "./index.css";
 
@@ -11,6 +11,7 @@ function App() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [shuffledImages, setShuffledImages] = useState([]);
+  const [navOpen, setNavOpen] = useState(false);
 
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
@@ -47,22 +48,26 @@ function App() {
 
   return (
     <div className="bg-white text-gray-800 font-poppins">
-      {/* Favicon handled via public/favicon.ico */}
-
       {/* Header */}
       <header className="sticky top-0 bg-white shadow-md z-50">
         <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a
-            href="#home"
-            className="text-2xl font-bold hover:text-black transition"
-          >
+          <a href="#home" className="text-2xl font-bold hover:text-black transition">
             Thiru Thodangi
           </a>
-          <ul className="flex gap-6 font-medium text-sm md:text-base">
-            <li><a href="#home" className="hover:text-black">Home</a></li>
-            <li><a href="#about" className="hover:text-black">About</a></li>
-            <li><a href="#gallery" className="hover:text-black">Gallery</a></li>
-            <li><a href="#contact" className="hover:text-black">Contact</a></li>
+          <div className="md:hidden">
+            <button onClick={() => setNavOpen(!navOpen)} className="text-2xl">
+              {navOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
+          <ul
+            className={`md:flex gap-6 font-medium text-sm md:text-base absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent transition-all duration-300 ${
+              navOpen ? "flex flex-col items-center z-40" : "hidden md:flex"
+            }`}
+          >
+            <li><a href="#home" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Home</a></li>
+            <li><a href="#about" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">About</a></li>
+            <li><a href="#gallery" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Gallery</a></li>
+            <li><a href="#contact" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Contact</a></li>
           </ul>
         </nav>
       </header>
@@ -110,7 +115,7 @@ function App() {
                   <motion.img
                     src={`/gallery/${img}.webp`}
                     alt={`Thiru ${img}`}
-                    className="w-full h-[75vh] object-cover"
+                    className="w-full h-[70vh] md:h-[75vh] object-cover rounded-2xl"
                     initial={{ scale: 1.05 }}
                     animate={{ scale: 1 }}
                     transition={{ duration: 1 }}
@@ -149,7 +154,7 @@ function App() {
               src={`/gallery/${img}.webp`}
               alt={`Thiru ${img}`}
               loading="lazy"
-              className="w-full h-[300px] object-cover rounded-xl shadow-md transition-all duration-500 ease-in-out"
+              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
               style={{ filter: "blur(10px)" }}
               onLoad={(e) => (e.currentTarget.style.filter = "none")}
             />
@@ -215,7 +220,7 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-100 py-6 text-center text-sm text-gray-600">
         <div className="space-x-3">
-          <a href="https://instagram.com/mr_thiru_2002" target="_blank" className="hover:text-black inline-flex items-center gap-1">
+          <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black inline-flex items-center gap-1">
             <FaInstagram /> @mr_thiru_2002
           </a>
           |
