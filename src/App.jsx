@@ -17,7 +17,7 @@ function App() {
     document.documentElement.style.scrollBehavior = "smooth";
 
     const username = "thiruthodangi2002"; // GitHub username
-    const repo = "thiru-portfolio"; // GitHub repo
+    const repo = "ThiruThodangi"; // GitHub repo
     const folder = "gallery"; // moved to root for jsDelivr to access
 
     fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
