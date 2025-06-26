@@ -22,27 +22,28 @@ function App() {
     fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
       .then((res) => res.json())
       .then((data) => {
-        const longHairSet = new Set();
-        const shortHairSet = new Set();
+        const seen = new Set();
+        const longHair = [];
+        const shortHair = [];
 
         data.forEach((file) => {
-          if (file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
-            const imageUrl = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
-            const lowerName = file.name.toLowerCase();
+          if (!file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
 
-            if (lowerName.includes("long") && !longHairSet.has(imageUrl)) {
-              longHairSet.add(imageUrl);
-            } else if (
-              lowerName.includes("short") &&
-              !shortHairSet.has(imageUrl)
-            ) {
-              shortHairSet.add(imageUrl);
-            }
+          const name = file.name.toLowerCase();
+          const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
+
+          if (seen.has(url)) return;
+          seen.add(url);
+
+          if (name.includes("long")) {
+            longHair.push(url);
+          } else if (name.includes("short")) {
+            shortHair.push(url);
           }
         });
 
-        setLongHairImages(Array.from(longHairSet));
-        setShortHairImages(Array.from(shortHairSet));
+        setLongHairImages(longHair);
+        setShortHairImages(shortHair);
       })
       .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
