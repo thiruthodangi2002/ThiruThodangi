@@ -74,7 +74,10 @@ function App() {
       {/* Navbar */}
       <header className="sticky top-0 bg-white shadow-md z-50">
         <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a href="#home" className="text-2xl font-bold hover:text-black transition">
+          <a
+            href="#home"
+            className="text-2xl font-bold hover:text-black transition"
+          >
             Thiru Thodangi
           </a>
           <div className="md:hidden">
@@ -82,47 +85,92 @@ function App() {
               {navOpen ? <FaTimes /> : <FaBars />}
             </button>
           </div>
-          <ul className={`md:flex gap-6 font-medium text-sm md:text-base absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent transition-all duration-300 ${navOpen ? "flex flex-col items-center z-40" : "hidden md:flex"}`}>
-            <li><a href="#home" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Home</a></li>
-            <li><a href="#about" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">About</a></li>
-            <li><a href="#gallery" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Gallery</a></li>
-            <li><a href="#contact" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Contact</a></li>
+          <ul
+            className={`md:flex gap-6 font-medium text-sm md:text-base absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent transition-all duration-300 ${
+              navOpen ? "flex flex-col items-center z-40" : "hidden md:flex"
+            }`}
+          >
+            <li>
+              <a
+                href="#home"
+                onClick={() => setNavOpen(false)}
+                className="hover:text-black py-2 px-4 block"
+              >
+                Home
+              </a>
+            </li>
+            <li>
+              <a
+                href="#about"
+                onClick={() => setNavOpen(false)}
+                className="hover:text-black py-2 px-4 block"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="#gallery"
+                onClick={() => setNavOpen(false)}
+                className="hover:text-black py-2 px-4 block"
+              >
+                Gallery
+              </a>
+            </li>
+            <li>
+              <a
+                href="#contact"
+                onClick={() => setNavOpen(false)}
+                className="hover:text-black py-2 px-4 block"
+              >
+                Contact
+              </a>
+            </li>
           </ul>
         </nav>
       </header>
 
-      {/* Hero Section */}
-      <section
-        id="home"
-        className="relative h-[85vh] flex items-center justify-center text-center text-white"
-        style={{
-          backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short5.webp)`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="bg-black bg-opacity-50 p-6 rounded-xl">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1, duration: 1 }}
-            className="text-4xl md:text-6xl font-extrabold"
-          >
-            A Fresh Face with Fierce Passion
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5, duration: 1 }}
-            className="mt-4 text-lg md:text-xl"
-          >
-            I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand shoots, editorials, and collabs.
-          </motion.p>
-        </div>
-      </section>
+     {/* Hero Section */}
+<section
+  id="home"
+  className="relative h-[92vh] flex items-center justify-center text-white"
+  style={{
+    backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short4.webp)`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+  {/* Dark overlay */}
+  <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+
+  {/* Centered Text */}
+  <div className="relative z-20 text-center px-4 md:px-8">
+    <motion.h1
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1, duration: 1 }}
+      className="text-3xl md:text-5xl font-extrabold"
+    >
+      A Fresh Face with Fierce Passion
+    </motion.h1>
+    <motion.p
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 1.5, duration: 1 }}
+      className="mt-3 text-base md:text-xl"
+    >
+      I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand shoots, editorials, and collabs.
+    </motion.p>
+  </div>
+</section>
+
 
       {/* About Section */}
-      <section id="about" className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+      <section
+        id="about"
+        className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center"
+      >
         <img
           src="https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short3.webp"
           alt="Thiru profile"
@@ -131,24 +179,34 @@ function App() {
         <div>
           <h2 className="text-4xl font-bold mb-4">About Me</h2>
           <p className="text-lg leading-relaxed text-gray-600">
-            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into fashion with creativity and confidence. I bring raw talent, bold presence, and expressive energy to every shoot. If you’re looking for a unique edge—let’s make something remarkable.
+            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into
+            fashion with creativity and confidence. I bring raw talent, bold
+            presence, and expressive energy to every shoot. If you’re looking
+            for a unique edge—let’s make something remarkable.
           </p>
         </div>
       </section>
 
       {/* Gallery Toggle */}
-      <section id="gallery" className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center">
+      <section
+        id="gallery"
+        className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center"
+      >
         <h2 className="text-3xl font-bold mb-6">Gallery</h2>
         <div className="mb-6 flex justify-center gap-4">
           <button
             onClick={() => setShowLongHair(true)}
-            className={`px-4 py-2 rounded-full border ${showLongHair ? "bg-black text-white" : "bg-white text-black"}`}
+            className={`px-4 py-2 rounded-full border ${
+              showLongHair ? "bg-black text-white" : "bg-white text-black"
+            }`}
           >
             Long Hair
           </button>
           <button
             onClick={() => setShowLongHair(false)}
-            className={`px-4 py-2 rounded-full border ${!showLongHair ? "bg-black text-white" : "bg-white text-black"}`}
+            className={`px-4 py-2 rounded-full border ${
+              !showLongHair ? "bg-black text-white" : "bg-white text-black"
+            }`}
           >
             Short Hair
           </button>
@@ -167,11 +225,15 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
+      <section
+        id="contact"
+        className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12"
+      >
         <div className="space-y-6">
           <h2 className="text-4xl font-bold">Let’s Collaborate</h2>
           <p className="text-lg text-gray-600">
-            I'm open to brand work, lookbooks, creative shoots, and campaigns. Drop me a message and let’s make something iconic.
+            I'm open to brand work, lookbooks, creative shoots, and campaigns.
+            Drop me a message and let’s make something iconic.
           </p>
           <div className="text-gray-700 space-y-2">
             <p className="flex items-center gap-3">
@@ -184,7 +246,9 @@ function App() {
         </div>
         <div className="bg-white border rounded-xl p-6 shadow-lg">
           {sent ? (
-            <p className="text-green-500 text-lg text-center">Message sent successfully!</p>
+            <p className="text-green-500 text-lg text-center">
+              Message sent successfully!
+            </p>
           ) : (
             <form className="space-y-4" onSubmit={handleSubmit}>
               <input
@@ -244,7 +308,9 @@ function App() {
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
-        <p className="mt-2">© {new Date().getFullYear()} Thiru Thodangi. All rights reserved.</p>
+        <p className="mt-2">
+          © {new Date().getFullYear()} Thiru Thodangi. All rights reserved.
+        </p>
       </footer>
     </div>
   );
