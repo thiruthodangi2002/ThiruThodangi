@@ -130,41 +130,41 @@ function App() {
         </nav>
       </header>
 
-     {/* Hero Section */}
-<section
-  id="home"
-  className="relative h-[92vh] flex items-center justify-center text-white"
-  style={{
-    backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short4.webp)`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-  {/* Dark overlay */}
-  <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+      {/* Hero Section */}
+      <section
+        id="home"
+        className="relative h-[92vh] flex items-center justify-center text-white"
+        style={{
+          backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short4.webp)`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
 
-  {/* Centered Text */}
-  <div className="relative z-20 text-center px-4 md:px-8">
-    <motion.h1
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1, duration: 1 }}
-      className="text-3xl md:text-5xl font-extrabold"
-    >
-      A Fresh Face with Fierce Passion
-    </motion.h1>
-    <motion.p
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      transition={{ delay: 1.5, duration: 1 }}
-      className="mt-3 text-base md:text-xl"
-    >
-      I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand shoots, editorials, and collabs.
-    </motion.p>
-  </div>
-</section>
-
+        {/* Centered Text */}
+        <div className="relative z-20 text-center px-4 md:px-8">
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
+            className="text-3xl md:text-5xl font-extrabold"
+          >
+            A Fresh Face with Fierce Passion
+          </motion.h1>
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 1 }}
+            className="mt-3 text-base md:text-xl"
+          >
+            I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand
+            shoots, editorials, and collabs.
+          </motion.p>
+        </div>
+      </section>
 
       {/* About Section */}
       <section
