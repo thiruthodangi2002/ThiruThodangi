@@ -218,7 +218,7 @@ function App() {
               key={i}
               src={img}
               alt={`Hair ${i}`}
-              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
+              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 "
             />
           ))}
         </div>
