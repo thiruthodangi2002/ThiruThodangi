@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay } from "swiper/modules";
-import "swiper/css";
 import { FaInstagram, FaEnvelope, FaBars, FaTimes } from "react-icons/fa";
 import emailjs from "emailjs-com";
 import "./index.css";
@@ -13,6 +10,7 @@ function App() {
   const [longHairImages, setLongHairImages] = useState([]);
   const [shortHairImages, setShortHairImages] = useState([]);
   const [navOpen, setNavOpen] = useState(false);
+  const [showLongHair, setShowLongHair] = useState(true);
 
   useEffect(() => {
     document.documentElement.style.scrollBehavior = "smooth";
@@ -73,10 +71,30 @@ function App() {
 
   return (
     <div className="bg-white text-gray-800 font-poppins">
-      {/* Hero Section with one background image */}
+      {/* Navbar */}
+      <header className="sticky top-0 bg-white shadow-md z-50">
+        <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          <a href="#home" className="text-2xl font-bold hover:text-black transition">
+            Thiru Thodangi
+          </a>
+          <div className="md:hidden">
+            <button onClick={() => setNavOpen(!navOpen)} className="text-2xl">
+              {navOpen ? <FaTimes /> : <FaBars />}
+            </button>
+          </div>
+          <ul className={`md:flex gap-6 font-medium text-sm md:text-base absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent transition-all duration-300 ${navOpen ? "flex flex-col items-center z-40" : "hidden md:flex"}`}>
+            <li><a href="#home" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Home</a></li>
+            <li><a href="#about" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">About</a></li>
+            <li><a href="#gallery" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Gallery</a></li>
+            <li><a href="#contact" onClick={() => setNavOpen(false)} className="hover:text-black py-2 px-4 block">Contact</a></li>
+          </ul>
+        </nav>
+      </header>
+
+      {/* Hero Section */}
       <section
         id="home"
-        className="relative h-screen flex items-center justify-center text-center text-white"
+        className="relative h-[85vh] flex items-center justify-center text-center text-white"
         style={{
           backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short5.webp)`,
           backgroundSize: "cover",
@@ -85,17 +103,17 @@ function App() {
       >
         <div className="bg-black bg-opacity-50 p-6 rounded-xl">
           <motion.h1
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1, duration: 1 }}
             className="text-4xl md:text-6xl font-extrabold"
           >
             A Fresh Face with Fierce Passion
           </motion.h1>
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.8 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 1.5, duration: 1 }}
             className="mt-4 text-lg md:text-xl"
           >
             I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand shoots, editorials, and collabs.
@@ -118,32 +136,30 @@ function App() {
         </div>
       </section>
 
-      {/* Gallery Section */}
-      <section
-        id="gallery"
-        className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center"
-      >
-        <h2 className="text-3xl font-bold mb-10">Gallery</h2>
-
-        <h3 className="text-2xl font-semibold mt-10 mb-4">Long Hair Look</h3>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {longHairImages.map((img, i) => (
-            <motion.img
-              key={`long-${i}`}
-              src={img}
-              alt={`Long Hair ${i}`}
-              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
-            />
-          ))}
+      {/* Gallery Toggle */}
+      <section id="gallery" className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center">
+        <h2 className="text-3xl font-bold mb-6">Gallery</h2>
+        <div className="mb-6 flex justify-center gap-4">
+          <button
+            onClick={() => setShowLongHair(true)}
+            className={`px-4 py-2 rounded-full border ${showLongHair ? "bg-black text-white" : "bg-white text-black"}`}
+          >
+            Long Hair
+          </button>
+          <button
+            onClick={() => setShowLongHair(false)}
+            className={`px-4 py-2 rounded-full border ${!showLongHair ? "bg-black text-white" : "bg-white text-black"}`}
+          >
+            Short Hair
+          </button>
         </div>
 
-        <h3 className="text-2xl font-semibold mt-10 mb-4">Short Hair Look</h3>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {shortHairImages.map((img, i) => (
+          {(showLongHair ? longHairImages : shortHairImages).map((img, i) => (
             <motion.img
-              key={`short-${i}`}
+              key={i}
               src={img}
-              alt={`Short Hair ${i}`}
+              alt={`Hair ${i}`}
               className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 hover:grayscale"
             />
           ))}
@@ -151,10 +167,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12"
-      >
+      <section id="contact" className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
           <h2 className="text-4xl font-bold">Let’s Collaborate</h2>
           <p className="text-lg text-gray-600">
@@ -171,9 +184,7 @@ function App() {
         </div>
         <div className="bg-white border rounded-xl p-6 shadow-lg">
           {sent ? (
-            <p className="text-green-500 text-lg text-center">
-              Message sent successfully!
-            </p>
+            <p className="text-green-500 text-lg text-center">Message sent successfully!</p>
           ) : (
             <form className="space-y-4" onSubmit={handleSubmit}>
               <input
@@ -233,9 +244,7 @@ function App() {
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
-        <p className="mt-2">
-          © {new Date().getFullYear()} Thiru Thodangi. All rights reserved.
-        </p>
+        <p className="mt-2">© {new Date().getFullYear()} Thiru Thodangi. All rights reserved.</p>
       </footer>
     </div>
   );
