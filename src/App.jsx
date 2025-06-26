@@ -29,21 +29,22 @@ function App() {
         data.forEach((file) => {
           if (!file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
 
-          const name = file.name.toLowerCase();
           const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
 
+          // Skip duplicates globally
           if (seen.has(url)) return;
           seen.add(url);
 
-          if (name.includes("long")) {
-            longHair.push(url);
-          } else if (name.includes("short")) {
-            shortHair.push(url);
-          }
+          const lower = file.name.toLowerCase();
+          if (lower.includes("long")) longHair.push(url);
+          else if (lower.includes("short")) shortHair.push(url);
         });
 
+        // Ensure no overlap: remove any shortHair that appear in longHair
+        const uniqueShort = shortHair.filter((url) => !longHair.includes(url));
+
         setLongHairImages(longHair);
-        setShortHairImages(shortHair);
+        setShortHairImages(uniqueShort);
       })
       .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
@@ -58,11 +59,7 @@ function App() {
       .send(
         "service_svc5v1n",
         "template_lyq1cjh",
-        {
-          from_name: form.name,
-          from_email: form.email,
-          message: form.message,
-        },
+        { from_name: form.name, from_email: form.email, message: form.message },
         "TClvfqrzHuKZejqA3"
       )
       .then(() => {
@@ -80,10 +77,7 @@ function App() {
       {/* Navbar */}
       <header className="sticky top-0 bg-white shadow-md z-50">
         <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a
-            href="#home"
-            className="text-2xl font-bold hover:text-black transition"
-          >
+          <a href="#home" className="text-2xl font-bold hover:text-black transition">
             Thiru Thodangi
           </a>
           <div className="md:hidden">
@@ -96,42 +90,17 @@ function App() {
               navOpen ? "flex flex-col items-center z-40" : "hidden md:flex"
             }`}
           >
-            <li>
-              <a
-                href="#home"
-                onClick={() => setNavOpen(false)}
-                className="hover:text-black py-2 px-4 block"
-              >
-                Home
-              </a>
-            </li>
-            <li>
-              <a
-                href="#about"
-                onClick={() => setNavOpen(false)}
-                className="hover:text-black py-2 px-4 block"
-              >
-                About
-              </a>
-            </li>
-            <li>
-              <a
-                href="#gallery"
-                onClick={() => setNavOpen(false)}
-                className="hover:text-black py-2 px-4 block"
-              >
-                Gallery
-              </a>
-            </li>
-            <li>
-              <a
-                href="#contact"
-                onClick={() => setNavOpen(false)}
-                className="hover:text-black py-2 px-4 block"
-              >
-                Contact
-              </a>
-            </li>
+            {["home", "about", "gallery", "contact"].map((sec) => (
+              <li key={sec}>
+                <a
+                  href={`#${sec}`}
+                  onClick={() => setNavOpen(false)}
+                  className="hover:text-black py-2 px-4 block"
+                >
+                  {sec.charAt(0).toUpperCase() + sec.slice(1)}
+                </a>
+              </li>
+            ))}
           </ul>
         </nav>
       </header>
@@ -141,16 +110,13 @@ function App() {
         id="home"
         className="relative h-[92vh] flex items-center justify-center text-white"
         style={{
-          backgroundImage: `url(https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short4.webp)`,
+          backgroundImage: `url(${shortHairImages[4] || ""})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Dark overlay */}
         <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-
-        {/* Centered Text */}
         <div className="relative z-20 text-center px-4 md:px-8">
           <motion.h1
             initial={{ opacity: 0 }}
@@ -166,8 +132,8 @@ function App() {
             transition={{ delay: 1.5, duration: 1 }}
             className="mt-3 text-base md:text-xl"
           >
-            I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand
-            shoots, editorials, and collabs.
+            I’m <strong>Thiru Thodangi</strong> — aspiring model open to brand shoots,
+            editorials, and collabs.
           </motion.p>
         </div>
       </section>
@@ -178,26 +144,22 @@ function App() {
         className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center"
       >
         <img
-          src="https://cdn.jsdelivr.net/gh/thiruthodangi2002/ThiruThodangi/gallery/short3.webp"
+          src={shortHairImages[1] || ""}
           alt="Thiru profile"
           className="rounded-2xl shadow-lg w-full object-cover"
         />
         <div>
           <h2 className="text-4xl font-bold mb-4">About Me</h2>
           <p className="text-lg leading-relaxed text-gray-600">
-            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into
-            fashion with creativity and confidence. I bring raw talent, bold
-            presence, and expressive energy to every shoot. If you’re looking
-            for a unique edge—let’s make something remarkable.
+            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into fashion with creativity
+            and confidence. I bring raw talent, bold presence, and expressive energy to every
+            shoot. If you’re looking for a unique edge—let’s make something remarkable.
           </p>
         </div>
       </section>
 
       {/* Gallery Toggle */}
-      <section
-        id="gallery"
-        className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center"
-      >
+      <section id="gallery" className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center">
         <h2 className="text-3xl font-bold mb-6">Gallery</h2>
         <div className="mb-6 flex justify-center gap-4">
           <button
@@ -217,14 +179,13 @@ function App() {
             Short Hair
           </button>
         </div>
-
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {(showLongHair ? longHairImages : shortHairImages).map((img, i) => (
             <motion.img
-              key={i}
+              key={img}
               src={img}
               alt={`Hair ${i}`}
-              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105 "
+              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
             />
           ))}
         </div>
@@ -238,8 +199,8 @@ function App() {
         <div className="space-y-6">
           <h2 className="text-4xl font-bold">Let’s Collaborate</h2>
           <p className="text-lg text-gray-600">
-            I'm open to brand work, lookbooks, creative shoots, and campaigns.
-            Drop me a message and let’s make something iconic.
+            I'm open to brand work, lookbooks, creative shoots, and campaigns. Drop me a message and
+            let’s make something iconic.
           </p>
           <div className="text-gray-700 space-y-2">
             <p className="flex items-center gap-3">
@@ -305,8 +266,8 @@ function App() {
             className="hover:text-black inline-flex items-center gap-1"
           >
             <FaInstagram /> @mr_thiru_2002
-          </a>
-          |
+          </a>{" "}
+          |{" "}
           <a
             href="mailto:thiruthodangi@gmail.com"
             className="hover:text-black inline-flex items-center gap-1"
@@ -314,9 +275,7 @@ function App() {
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
-        <p className="mt-2">
-          © {new Date().getFullYear()} Thiru Thodangi. All rights reserved.
-        </p>
+        <p className="mt-2">© {new Date().getFullYear()} Thiru Thodangi. All rights reserved.</p>
       </footer>
     </div>
   );
