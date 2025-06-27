@@ -1,10 +1,13 @@
+// src/App.jsx
 import React, { useState, useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaInstagram, FaEnvelope, FaBars, FaTimes } from "react-icons/fa";
 import emailjs from "emailjs-com";
+import AdminPanel from "./AdminPanel"; // ✅ Make sure this file exists
 import "./index.css";
 
-function App() {
+function PortfolioSite() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
   const [shortHairImages, setShortHairImages] = useState([]);
@@ -38,14 +41,11 @@ function App() {
           let match;
           if ((match = name.match(/^short(\d+)\.(jpe?g|png|webp|gif)$/))) {
             shortHair.push({ url, index: parseInt(match[1], 10) });
-          } else if (
-            (match = name.match(/^long(\d+)\.(jpe?g|png|webp|gif)$/))
-          ) {
+          } else if ((match = name.match(/^long(\d+)\.(jpe?g|png|webp|gif)$/))) {
             longHair.push({ url, index: parseInt(match[1], 10) });
           }
         });
 
-        // Sort by numeric index to ensure correct order
         shortHair.sort((a, b) => a.index - b.index);
         longHair.sort((a, b) => a.index - b.index);
 
@@ -56,14 +56,11 @@ function App() {
   }, []);
 
   const heroImage =
-    shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/i.test(url)) ||
-    "";
+    shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/i.test(url)) || "";
   const aboutImage =
-    shortHairImages.find((url) => /short3\.(jpe?g|png|webp|gif)$/i.test(url)) ||
-    "";
+    shortHairImages.find((url) => /short3\.(jpe?g|png|webp|gif)$/i.test(url)) || "";
 
-  const handleChange = (e) =>
-    setForm({ ...form, [e.target.name]: e.target.value });
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -89,10 +86,7 @@ function App() {
       {/* Navbar */}
       <header className="sticky top-0 bg-white shadow-md z-50">
         <nav className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <a
-            href="#home"
-            className="text-2xl font-bold hover:text-black transition"
-          >
+          <a href="#home" className="text-2xl font-bold hover:text-black transition">
             Thiru Thodangi
           </a>
           <div className="md:hidden">
@@ -166,19 +160,13 @@ function App() {
         <div>
           <h2 className="text-4xl font-bold mb-4">About Me</h2>
           <p className="text-lg leading-relaxed text-gray-600">
-            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into
-            fashion with creativity and confidence. I bring raw talent, bold
-            presence, and expressive energy to every shoot. If you’re looking
-            for a unique edge—let’s make something remarkable.
+            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into fashion with creativity and confidence. I bring raw talent, bold presence, and expressive energy to every shoot. If you’re looking for a unique edge—let’s make something remarkable.
           </p>
         </div>
       </section>
 
       {/* Gallery Toggle */}
-      <section
-        id="gallery"
-        className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center"
-      >
+      <section id="gallery" className="py-20 px-6 md:px-10 lg:px-20 bg-white text-center">
         <h2 className="text-3xl font-bold mb-6">Gallery</h2>
         <div className="mb-6 flex justify-center gap-4">
           <button
@@ -211,10 +199,7 @@ function App() {
       </section>
 
       {/* Contact Section */}
-      <section
-        id="contact"
-        className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12"
-      >
+      <section id="contact" className="py-24 px-6 max-w-7xl mx-auto grid md:grid-cols-2 gap-12">
         <div className="space-y-6">
           <h2 className="text-4xl font-bold">Let’s Collaborate</h2>
           <p className="text-lg text-gray-600">
@@ -224,21 +209,13 @@ function App() {
           <div className="text-gray-700 space-y-2">
             <p className="flex items-center gap-3">
               <FaInstagram />{" "}
-              <a
-                href="https://instagram.com/mr_thiru_2002"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-black"
-              >
+              <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black">
                 @mr_thiru_2002
               </a>
             </p>
             <p className="flex items-center gap-3">
               <FaEnvelope />{" "}
-              <a
-                href="mailto:thiruthodangi@gmail.com"
-                className="hover:text-black"
-              >
+              <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black">
                 thiruthodangi@gmail.com
               </a>
             </p>
@@ -246,44 +223,13 @@ function App() {
         </div>
         <div className="bg-white border rounded-xl p-6 shadow-lg">
           {sent ? (
-            <p className="text-green-500 text-lg text-center">
-              Message sent successfully!
-            </p>
+            <p className="text-green-500 text-lg text-center">Message sent successfully!</p>
           ) : (
             <form className="space-y-4" onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="name"
-                placeholder="Your Name"
-                className="w-full px-4 py-2 border rounded"
-                value={form.name}
-                onChange={handleChange}
-                required
-              />
-              <input
-                type="email"
-                name="email"
-                placeholder="Your Email"
-                className="w-full px-4 py-2 border rounded"
-                value={form.email}
-                onChange={handleChange}
-                required
-              />
-              <textarea
-                name="message"
-                placeholder="Your Message"
-                rows="5"
-                className="w-full px-4 py-2 border rounded"
-                value={form.message}
-                onChange={handleChange}
-                required
-              />
-              <button
-                type="submit"
-                className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium"
-              >
-                Send Message
-              </button>
+              <input type="text" name="name" placeholder="Your Name" className="w-full px-4 py-2 border rounded" value={form.name} onChange={handleChange} required />
+              <input type="email" name="email" placeholder="Your Email" className="w-full px-4 py-2 border rounded" value={form.email} onChange={handleChange} required />
+              <textarea name="message" placeholder="Your Message" rows="5" className="w-full px-4 py-2 border rounded" value={form.message} onChange={handleChange} required />
+              <button type="submit" className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium">Send Message</button>
             </form>
           )}
         </div>
@@ -292,19 +238,11 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-100 py-6 text-center text-sm text-gray-600">
         <div className="space-x-3">
-          <a
-            href="https://instagram.com/mr_thiru_2002"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-black inline-flex items-center gap-1"
-          >
+          <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black inline-flex items-center gap-1">
             <FaInstagram /> @mr_thiru_2002
           </a>{" "}
           |{" "}
-          <a
-            href="mailto:thiruthodangi@gmail.com"
-            className="hover:text-black inline-flex items-center gap-1"
-          >
+          <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black inline-flex items-center gap-1">
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
@@ -315,4 +253,14 @@ function App() {
     </div>
   );
 }
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<PortfolioSite />} />
+      <Route path="/admin" element={<AdminPanel />} />
+    </Routes>
+  );
+}
+
 export default App;
