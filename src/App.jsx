@@ -23,28 +23,30 @@ function App() {
       .then((res) => res.json())
       .then((data) => {
         const seen = new Set();
-        const longHair = [];
         const shortHair = [];
+        const longHair = [];
 
         data.forEach((file) => {
           if (!file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
 
+          const name = file.name.toLowerCase();
           const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
 
-          // Skip duplicates globally
           if (seen.has(url)) return;
           seen.add(url);
 
-          const lower = file.name.toLowerCase();
-          if (lower.includes("long")) longHair.push(url);
-          else if (lower.includes("short")) shortHair.push(url);
+          if (/^short\d+\.(jpg|jpeg|png|webp|gif)$/.test(name)) {
+            shortHair.push(url);
+          } else if (/^long\d+\.(jpg|jpeg|png|webp|gif)$/.test(name)) {
+            longHair.push(url);
+          }
         });
 
-        // Ensure no overlap: remove any shortHair that appear in longHair
-        const uniqueShort = shortHair.filter((url) => !longHair.includes(url));
+        shortHair.sort();
+        longHair.sort();
 
+        setShortHairImages(shortHair);
         setLongHairImages(longHair);
-        setShortHairImages(uniqueShort);
       })
       .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
@@ -110,7 +112,7 @@ function App() {
         id="home"
         className="relative h-[92vh] flex items-center justify-center text-white"
         style={{
-          backgroundImage: `url(${shortHairImages[4] || ""})`,
+          backgroundImage: `url(${shortHairImages[0] || ""})`, // short1.jpg
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -144,7 +146,7 @@ function App() {
         className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center"
       >
         <img
-          src={shortHairImages[1] || ""}
+          src={shortHairImages[2] || ""} // short3.jpg
           alt="Thiru profile"
           className="rounded-2xl shadow-lg w-full object-cover"
         />
