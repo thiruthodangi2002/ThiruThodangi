@@ -7,8 +7,8 @@ import "./index.css";
 function App() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [sent, setSent] = useState(false);
-  const [longHairImages, setLongHairImages] = useState([]);
   const [shortHairImages, setShortHairImages] = useState([]);
+  const [longHairImages, setLongHairImages] = useState([]);
   const [navOpen, setNavOpen] = useState(false);
   const [showLongHair, setShowLongHair] = useState(true);
 
@@ -27,33 +27,37 @@ function App() {
         const longHair = [];
 
         data.forEach((file) => {
-          if (!file.name.match(/\.(jpg|jpeg|png|webp|gif)$/i)) return;
+          if (!file.name.match(/\.(jpe?g|png|webp|gif)$/i)) return;
 
           const name = file.name.toLowerCase();
           const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
 
-          if (seen.has(url)) return;
+          if (seen.has(url)) return;       // dedupe
           seen.add(url);
 
-          if (/^short\d+\.(jpg|jpeg|png|webp|gif)$/.test(name)) {
-            shortHair.push(url);
-          } else if (/^long\d+\.(jpg|jpeg|png|webp|gif)$/.test(name)) {
-            longHair.push(url);
+          if (/^short(\d+)\.(jpe?g|png|webp|gif)$/.test(name)) {
+            shortHair.push({ url, index: Number(name.match(/^short(\d+)/)[1]) });
+          } else if (/^long(\d+)\.(jpe?g|png|webp|gif)$/.test(name)) {
+            longHair.push({ url, index: Number(name.match(/^long(\d+)/)[1]) });
           }
         });
 
-        shortHair.sort();
-        longHair.sort();
+        // sort by numeric index
+        shortHair.sort((a, b) => a.index - b.index);
+        longHair.sort((a, b) => a.index - b.index);
 
-        setShortHairImages(shortHair);
-        setLongHairImages(longHair);
+        // extract just URLs
+        setShortHairImages(shortHair.map((item) => item.url));
+        setLongHairImages(longHair.map((item) => item.url));
       })
       .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
 
-  const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
-  };
+  // Helper getters for hero/about
+  const heroImage = shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/.test(url)) || "";
+  const aboutImage = shortHairImages.find((url) => /short3\.(jpe?g|png|webp|gif)$/.test(url)) || "";
+
+  const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -112,7 +116,7 @@ function App() {
         id="home"
         className="relative h-[92vh] flex items-center justify-center text-white"
         style={{
-          backgroundImage: `url(${shortHairImages[0] || ""})`, // short1.jpg
+          backgroundImage: `url(${heroImage})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -146,7 +150,7 @@ function App() {
         className="py-24 px-6 max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center"
       >
         <img
-          src={shortHairImages[2] || ""} // short3.jpg
+          src={aboutImage}
           alt="Thiru profile"
           className="rounded-2xl shadow-lg w-full object-cover"
         />
@@ -186,7 +190,7 @@ function App() {
             <motion.img
               key={img}
               src={img}
-              alt={`Hair ${i}`}
+              alt={`Hair ${i + 1}`}
               className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
             />
           ))}
