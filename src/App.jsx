@@ -123,7 +123,7 @@ function App() {
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-        <div className="relative z-20 text-center:px-4 md:px-8">
+        <div className="relative z-20 text-center px-4 md:px-8">
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -191,7 +191,8 @@ function App() {
               key={img}
               src={img}
               alt={`Hair ${i + 1}`}
-              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105" />
+              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
+            />
           ))}
         </div>
       </section>
@@ -209,10 +210,21 @@ function App() {
           </p>
           <div className="text-gray-700 space-y-2">
             <p className="flex items-center gap-3">
-              <FaInstagram /> <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black">@mr_thiru_2002</a>
+              <FaInstagram />{" "}
+              <a
+                href="https://instagram.com/mr_thiru_2002"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-black"
+              >
+                @mr_thiru_2002
+              </a>
             </p>
             <p className="flex items-center gap-3">
-              <FaEnvelope /> <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black">thiruthodangi@gmail.com</a>
+              <FaEnvelope />{" "}
+              <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black">
+                thiruthodangi@gmail.com
+              </a>
             </p>
           </div>
         </div>
@@ -228,7 +240,8 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.name}
                 onChange={handleChange}
-                required />
+                required
+              />
               <input
                 type="email"
                 name="email"
@@ -236,7 +249,8 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.email}
                 onChange={handleChange}
-                required />
+                required
+              />
               <textarea
                 name="message"
                 placeholder="Your Message"
@@ -244,10 +258,12 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.message}
                 onChange={handleChange}
-                required />
+                required
+              />
               <button
                 type="submit"
-                className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium">
+                className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium"
+              >
                 Send Message
               </button>
             </form>
@@ -258,9 +274,19 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-100 py-6 text-center text-sm text-gray-600">
         <div className="space-x-3">
-          <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black inline-flex items-center gap-1">
+          <a
+            href="https://instagram.com/mr_thiru_2002"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-black inline-flex items-center gap-1"
+          >
             <FaInstagram /> @mr_thiru_2002
-          </a> | <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black inline-flex items-center gap-1">
+          </a>{" "}
+          |{" "}
+          <a
+            href="mailto:thiruthodangi@gmail.com"
+            className="hover:text-black inline-flex items-center gap-1"
+          >
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
