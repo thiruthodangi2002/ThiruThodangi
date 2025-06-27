@@ -72,7 +72,7 @@ function PortfolioSite() {
       .send(
         "service_svc5v1n",
         "template_lyq1cjh",
-        { from_name: form.name, from_email: form.email, message: form.message },
+        { from_name: form.name, reply_to: form.email, message: form.message },
         "TClvfqrzHuKZejqA3"
       )
       .then(() => {
