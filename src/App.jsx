@@ -37,7 +37,7 @@ function PortfolioSite() {
 
           if (seen.has(url)) return;
           seen.add(url);
-
+ac
           let match;
           if ((match = name.match(/^short(\d+)\.(jpe?g|png|webp|gif)$/))) {
             shortHair.push({ url, index: parseInt(match[1], 10) });
