@@ -32,30 +32,30 @@ function App() {
           const name = file.name.toLowerCase();
           const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
 
-          if (seen.has(url)) return;       // dedupe
+          if (seen.has(url)) return;
           seen.add(url);
 
-          if (/^short(\d+)\.(jpe?g|png|webp|gif)$/.test(name)) {
-            shortHair.push({ url, index: Number(name.match(/^short(\d+)/)[1]) });
-          } else if (/^long(\d+)\.(jpe?g|png|webp|gif)$/.test(name)) {
-            longHair.push({ url, index: Number(name.match(/^long(\d+)/)[1]) });
+          let match;
+          if ((match = name.match(/^short(\d+)\.(jpe?g|png|webp|gif)$/))) {
+            shortHair.push({ url, index: parseInt(match[1], 10) });
+          } else if ((match = name.match(/^long(\d+)\.(jpe?g|png|webp|gif)$/))) {
+            longHair.push({ url, index: parseInt(match[1], 10) });
           }
         });
 
-        // sort by numeric index
         shortHair.sort((a, b) => a.index - b.index);
         longHair.sort((a, b) => a.index - b.index);
 
-        // extract just URLs
         setShortHairImages(shortHair.map((item) => item.url));
         setLongHairImages(longHair.map((item) => item.url));
       })
       .catch((err) => console.error("Failed to fetch images:", err));
   }, []);
 
-  // Helper getters for hero/about
-  const heroImage = shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/.test(url)) || "";
-  const aboutImage = shortHairImages.find((url) => /short3\.(jpe?g|png|webp|gif)$/.test(url)) || "";
+  const heroImage =
+    shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/i.test(url)) || "";
+  const aboutImage =
+    shortHairImages.find((url) => /short3\.(jpe?g|png|webp|gif)$/i.test(url)) || "";
 
   const handleChange = (e) => setForm({ ...form, [e.target.name]: e.target.value });
 
@@ -123,7 +123,7 @@ function App() {
         }}
       >
         <div className="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-        <div className="relative z-20 text-center px-4 md:px-8">
+        <div className="relative z-20 text-center:px-4 md:px-8">
           <motion.h1
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -191,8 +191,7 @@ function App() {
               key={img}
               src={img}
               alt={`Hair ${i + 1}`}
-              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105"
-            />
+              className="w-full h-60 sm:h-72 md:h-80 object-cover rounded-xl shadow-md transition-transform duration-300 hover:scale-105" />
           ))}
         </div>
       </section>
@@ -210,18 +209,16 @@ function App() {
           </p>
           <div className="text-gray-700 space-y-2">
             <p className="flex items-center gap-3">
-              <FaInstagram /> @mr_thiru_2002
+              <FaInstagram /> <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black">@mr_thiru_2002</a>
             </p>
             <p className="flex items-center gap-3">
-              <FaEnvelope /> thiruthodangi@gmail.com
+              <FaEnvelope /> <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black">thiruthodangi@gmail.com</a>
             </p>
           </div>
         </div>
         <div className="bg-white border rounded-xl p-6 shadow-lg">
           {sent ? (
-            <p className="text-green-500 text-lg text-center">
-              Message sent successfully!
-            </p>
+            <p className="text-green-500 text-lg text-center">Message sent successfully!</p>
           ) : (
             <form className="space-y-4" onSubmit={handleSubmit}>
               <input
@@ -231,8 +228,7 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.name}
                 onChange={handleChange}
-                required
-              />
+                required />
               <input
                 type="email"
                 name="email"
@@ -240,8 +236,7 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.email}
                 onChange={handleChange}
-                required
-              />
+                required />
               <textarea
                 name="message"
                 placeholder="Your Message"
@@ -249,12 +244,10 @@ function App() {
                 className="w-full px-4 py-2 border rounded"
                 value={form.message}
                 onChange={handleChange}
-                required
-              />
+                required />
               <button
                 type="submit"
-                className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium"
-              >
+                className="bg-black text-white px-6 py-2 rounded hover:bg-gray-800 transition duration-300 text-sm font-medium">
                 Send Message
               </button>
             </form>
@@ -265,19 +258,9 @@ function App() {
       {/* Footer */}
       <footer className="bg-gray-100 py-6 text-center text-sm text-gray-600">
         <div className="space-x-3">
-          <a
-            href="https://instagram.com/mr_thiru_2002"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="hover:text-black inline-flex items-center gap-1"
-          >
+          <a href="https://instagram.com/mr_thiru_2002" target="_blank" rel="noopener noreferrer" className="hover:text-black inline-flex items-center gap-1">
             <FaInstagram /> @mr_thiru_2002
-          </a>{" "}
-          |{" "}
-          <a
-            href="mailto:thiruthodangi@gmail.com"
-            className="hover:text-black inline-flex items-center gap-1"
-          >
+          </a> | <a href="mailto:thiruthodangi@gmail.com" className="hover:text-black inline-flex items-center gap-1">
             <FaEnvelope /> thiruthodangi@gmail.com
           </a>
         </div>
