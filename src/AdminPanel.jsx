@@ -1,15 +1,21 @@
+// src/AdminPanel.jsx
 import React, { useState } from "react";
 import {
   uploadImageToGitHub,
   deleteFileFromGitHub,
   updateGalleryJSON,
-  getGalleryFiles
+  getGalleryFiles,
 } from "./utils/githubApi";
 import { auth } from "./firebase";
 import {
   signInWithEmailAndPassword,
   sendPasswordResetEmail,
 } from "firebase/auth";
+
+const username = "thiruthodangi2002";
+const repo = "ThiruThodangi";
+const folder = "gallery";
+const token = import.meta.env.VITE_GITHUB_TOKEN;
 
 function AdminPanel() {
   const [email, setEmail] = useState("");
@@ -18,8 +24,6 @@ function AdminPanel() {
   const [file, setFile] = useState(null);
   const [status, setStatus] = useState("");
   const [deleteName, setDeleteName] = useState("");
-
-  const token = import.meta.env.VITE_GITHUB_TOKEN;
 
   const handleLogin = async () => {
     try {
@@ -44,12 +48,12 @@ function AdminPanel() {
 
   const handleUpload = async () => {
     if (!file) return;
-    const path = `gallery/${file.name}`;
+    const path = `${folder}/${file.name}`;
     setStatus("Uploading...");
     try {
-      await uploadImageToGitHub(file, path, token);
-      const updatedFiles = await getGalleryFiles(token);
-      await updateGalleryJSON(updatedFiles, token);
+      await uploadImageToGitHub(file, path, token, username, repo);
+      const updatedFiles = await getGalleryFiles(token, username, repo, folder);
+      await updateGalleryJSON(updatedFiles, token, username, repo, folder);
       setStatus("✅ Upload successful");
     } catch {
       setStatus("❌ Upload failed");
@@ -58,14 +62,13 @@ function AdminPanel() {
 
   const handleDelete = async () => {
     if (!deleteName) return;
-    const path = `gallery/${deleteName}`;
+    const path = `${folder}/${deleteName.trim().toLowerCase()}`;
     const confirmed = window.confirm(`Are you sure to delete ${path}?`);
     if (!confirmed) return;
-
     try {
-      await deleteFileFromGitHub(path, token);
-      const updatedFiles = await getGalleryFiles(token);
-      await updateGalleryJSON(updatedFiles, token);
+      await deleteFileFromGitHub(path, token, username, repo);
+      const updatedFiles = await getGalleryFiles(token, username, repo, folder);
+      await updateGalleryJSON(updatedFiles, token, username, repo, folder);
       setStatus("✅ Deleted successfully");
     } catch {
       setStatus("❌ Delete failed");
@@ -102,7 +105,9 @@ function AdminPanel() {
           >
             Login
           </button>
-          {status && <p className="text-sm text-center mt-3 text-gray-600">{status}</p>}
+          {status && (
+            <p className="text-sm text-center mt-3 text-gray-600">{status}</p>
+          )}
         </div>
       </div>
     );

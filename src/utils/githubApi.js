@@ -1,81 +1,81 @@
-export async function uploadImageToGitHub(file, path, token) {
-  const reader = new FileReader();
-  return new Promise((resolve, reject) => {
-    reader.onload = async () => {
-      const content = reader.result.split(",")[1];
-      const url = `https://api.github.com/repos/${import.meta.env.VITE_GITHUB_USERNAME}/${import.meta.env.VITE_GITHUB_REPO}/contents/${path}`;
-      const response = await fetch(url, {
-        method: "PUT",
-        headers: {
-          Authorization: `token ${token}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          message: `Uploaded ${path}`,
-          content,
-          branch: import.meta.env.VITE_GITHUB_BRANCH,
-        }),
-      });
+// src/utils/githubApi.js
+export async function uploadImageToGitHub(file, path, token, username, repo) {
+  const content = await file.arrayBuffer();
+  const base64 = btoa(String.fromCharCode(...new Uint8Array(content)));
 
-      if (response.ok) resolve(await response.json());
-      else reject(await response.json());
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-export async function deleteFileFromGitHub(path, token) {
-  const url = `https://api.github.com/repos/${import.meta.env.VITE_GITHUB_USERNAME}/${import.meta.env.VITE_GITHUB_REPO}/contents/${path}`;
-  const meta = await fetch(url).then((res) => res.json());
-
-  if (!meta.sha) throw new Error("File not found");
-  const response = await fetch(url, {
-    method: "DELETE",
-    headers: {
-      Authorization: `token ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: `Deleted ${path}`,
-      sha: meta.sha,
-      branch: import.meta.env.VITE_GITHUB_BRANCH,
-    }),
-  });
-
-  if (!response.ok) throw new Error("Failed to delete");
-}
-
-export async function getGalleryFiles(token) {
-  const url = `https://api.github.com/repos/${import.meta.env.VITE_GITHUB_USERNAME}/${import.meta.env.VITE_GITHUB_REPO}/contents/gallery`;
-  const res = await fetch(url, {
-    headers: { Authorization: `token ${token}` },
-  });
-  const data = await res.json();
-  return data
-    .filter((f) => /\.(jpe?g|png|webp|gif)$/i.test(f.name))
-    .map((f) => f.name);
-}
-
-export async function updateGalleryJSON(fileList, token) {
-  const path = "gallery/gallery.json";
-  const url = `https://api.github.com/repos/${import.meta.env.VITE_GITHUB_USERNAME}/${import.meta.env.VITE_GITHUB_REPO}/contents/${path}`;
-  const get = await fetch(url, {
-    headers: { Authorization: `token ${token}` },
-  });
-  const meta = await get.json();
-  const content = btoa(JSON.stringify(fileList, null, 2));
-
-  await fetch(url, {
+  await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${path}`, {
     method: "PUT",
     headers: {
       Authorization: `token ${token}`,
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      message: "Updated gallery.json",
-      content,
-      branch: import.meta.env.VITE_GITHUB_BRANCH,
-      sha: meta.sha || undefined,
+      message: `Upload ${path}`,
+      content: base64,
+    }),
+  });
+}
+
+export async function deleteFileFromGitHub(path, token, username, repo) {
+  const res = await fetch(
+    `https://api.github.com/repos/${username}/${repo}/contents/${path}`,
+    {
+      headers: { Authorization: `token ${token}` },
+    }
+  );
+  const fileData = await res.json();
+
+  await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${path}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `token ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: `Delete ${path}`,
+      sha: fileData.sha,
+    }),
+  });
+}
+
+export async function getGalleryFiles(token, username, repo, folder) {
+  const res = await fetch(
+    `https://api.github.com/repos/${username}/${repo}/contents/${folder}`,
+    {
+      headers: { Authorization: `token ${token}` },
+    }
+  );
+  return res.json();
+}
+
+export async function updateGalleryJSON(files, token, username, repo, folder) {
+  const galleryData = files
+    .filter((f) => f.name.match(/\.(jpe?g|png|webp|gif)$/i))
+    .map((f) => f.name);
+
+  const jsonContent = JSON.stringify(galleryData, null, 2);
+  const base64 = btoa(unescape(encodeURIComponent(jsonContent)));
+
+  // Check if file exists
+  const res = await fetch(
+    `https://api.github.com/repos/${username}/${repo}/contents/${folder}/gallery.json`,
+    {
+      headers: { Authorization: `token ${token}` },
+    }
+  );
+  const file = await res.json();
+  const sha = file.sha || undefined;
+
+  await fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}/gallery.json`, {
+    method: "PUT",
+    headers: {
+      Authorization: `token ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      message: "Update gallery.json",
+      content: base64,
+      sha,
     }),
   });
 }
