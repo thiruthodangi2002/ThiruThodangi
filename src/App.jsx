@@ -16,46 +16,45 @@ function PortfolioSite() {
   const [showLongHair, setShowLongHair] = useState(true);
 
   useEffect(() => {
-    document.documentElement.style.scrollBehavior = "smooth";
+  document.documentElement.style.scrollBehavior = "smooth";
 
-    const username = "thiruthodangi2002";
-    const repo = "ThiruThodangi";
-    const folder = "gallery";
+  const username = "thiruthodangi2002";
+  const repo = "ThiruThodangi";
+  const folder = "gallery";
 
-    fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
-      .then((res) => res.json())
-      .then((data) => {
-        const seen = new Set();
-        const shortHair = [];
-        const longHair = [];
+  fetch(`https://api.github.com/repos/${username}/${repo}/contents/${folder}`)
+    .then((res) => res.json())
+    .then((data) => {
+      const seen = new Set();
+      const shortHair = [];
+      const longHair = [];
 
-        data.forEach((file) => {
-          if (!file.name.match(/\.(jpe?g|png|webp|gif)$/i)) return;
+      data.forEach((file) => {
+        if (!file.name.match(/\.(jpe?g|png|webp|gif)$/i)) return;
 
-          const name = file.name.toLowerCase();
-          const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}@main/${folder}/${file.name}`;
+        const name = file.name.toLowerCase(); // ✅ Normalize for matching
+        const url = `https://cdn.jsdelivr.net/gh/${username}/${repo}/${folder}/${file.name}`;
 
-          if (seen.has(url)) return;
-          seen.add(url);
+        if (seen.has(url)) return;
+        seen.add(url);
 
-          let match;
-          if ((match = name.match(/^short(\d+)\.(jpe?g|png|webp|gif)$/))) {
-            shortHair.push({ url, index: parseInt(match[1], 10) });
-          } else if (
-            (match = name.match(/^long(\d+)\.(jpe?g|png|webp|gif)$/))
-          ) {
-            longHair.push({ url, index: parseInt(match[1], 10) });
-          }
-        });
+        let match;
+        if ((match = name.match(/^short(\d+)\.(jpe?g|png|webp|gif)$/i))) {
+          shortHair.push({ url, index: parseInt(match[1], 10) });
+        } else if ((match = name.match(/^long(\d+)\.(jpe?g|png|webp|gif)$/i))) {
+          longHair.push({ url, index: parseInt(match[1], 10) });
+        }
+      });
 
-        shortHair.sort((a, b) => a.index - b.index);
-        longHair.sort((a, b) => a.index - b.index);
+      shortHair.sort((a, b) => a.index - b.index);
+      longHair.sort((a, b) => a.index - b.index);
 
-        setShortHairImages(shortHair.map((item) => item.url));
-        setLongHairImages(longHair.map((item) => item.url));
-      })
-      .catch((err) => console.error("Failed to fetch images:", err));
-  }, []);
+      setShortHairImages(shortHair.map((item) => item.url));
+      setLongHairImages(longHair.map((item) => item.url));
+    })
+    .catch((err) => console.error("Failed to fetch images:", err));
+}, []);
+
 
   const heroImage =
     shortHairImages.find((url) => /short1\.(jpe?g|png|webp|gif)$/i.test(url)) ||
