@@ -94,7 +94,7 @@ function PortfolioSite() {
             href="#home"
             className="text-2xl font-bold hover:text-black transition"
           >
-            Thiru Thodangi
+            T H ! R U 
           </a>
           <div className="md:hidden">
             <button onClick={() => setNavOpen(!navOpen)} className="text-2xl">
@@ -167,7 +167,7 @@ function PortfolioSite() {
         <div>
           <h2 className="text-4xl font-bold mb-4">About Me</h2>
           <p className="text-lg leading-relaxed text-gray-600">
-            I'm <strong>Thiru Thodangi</strong>, a fresh model breaking into
+            I'm <strong>Thiru Thodangi</strong>, a fresh face breaking into
             fashion with creativity and confidence. I bring raw talent, bold
             presence, and expressive energy to every shoot. If you’re looking
             for a unique edge—let’s make something remarkable.
@@ -310,7 +310,7 @@ function PortfolioSite() {
           </a>
         </div>
         <p className="mt-2">
-          © {new Date().getFullYear()} Thiru Thodangi. All rights reserved.
+          © {new Date().getFullYear()} T H ! R U . All rights reserved.
         </p>
       </footer>
     </div>
